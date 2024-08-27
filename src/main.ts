@@ -8,5 +8,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor());
   await app.listen(3000);
+
+  // const port = configServise.get<number>('port');
+  // await app.listen(port, ()=> console.log(`Running on port ${port}`));
+
 }
 bootstrap();
