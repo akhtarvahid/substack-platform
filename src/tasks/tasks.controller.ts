@@ -17,11 +17,14 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('tasks')
 @UseGuards(AuthGuard('jwt'))
 export class TasksController {
-  constructor(private taskService: TasksService) {}
+  constructor(private taskService: TasksService, private configService: ConfigService) {
+    console.log(configService.get('TEST_VALUE'));
+  }
 
   @Get()
   getTasks(
