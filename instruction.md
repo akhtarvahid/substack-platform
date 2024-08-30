@@ -19,3 +19,6 @@
 
   Run app through docker
   > docker-compose -f docker-compose.yml up --build -d
+
+  Run app through docker
+  > docker compose up --build

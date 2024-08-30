@@ -1,13 +1,17 @@
-#build stage
+# Dockerfile
+FROM node:14-alpine
 
-FROM node:18-alpine
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
 
 WORKDIR /usr/src/app
 
-COPY . .
-
+COPY package*.json ./
 RUN npm install
 
-EXPOSE 3000
+COPY . .
 
-CMD [ "npm", "run", "start:dev"]
+COPY wait-for-postgres.sh /usr/src/app/wait-for-postgres.sh
+RUN chmod +x /usr/src/app/wait-for-postgres.sh
+
+CMD ["./wait-for-postgres.sh", "npm", "run", "start:dev"]
