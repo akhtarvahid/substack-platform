@@ -6,14 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - PORT=3000
-      - NODE_ENV=development
-      - DB_HOST=postgres_db # service name as the host
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_DATABASE=postgres
+    env_file: 
+      - .env.stage.dev  
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
