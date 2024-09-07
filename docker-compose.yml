@@ -1,0 +1,43 @@
+name: substack-container #  docker container group name
+services:
+  nestjs_api: # 1 - nest application service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.stage.dev
+    volumes:
+      - ./src:/usr/src/app/src
+    depends_on:
+      - postgres_db #  postgres_db - dependent on line 22(postgres_db service: name should be same at both places)
+
+  postgres_db: # 2 - database service
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@admin.com  # user to login in the browser
+      PGADMIN_DEFAULT_PASSWORD: pgadmin123      # password to login in the browser
+    networks:
+      - backend_network
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres_db #  postgres_db - dependent on line 16(postgres_db service: name should be same at both places)
+
+networks:
+  backend_network:
+    driver: bridge
+volumes:
+  postgres_data: {}
