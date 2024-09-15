@@ -1,16 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/user.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { Task } from './task.entity';
-import { TaskStatus } from './task.status.enum';
-import { TasksRepository } from './tasks.repository';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/auth/user.entity";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { GetTasksFilterDto } from "./dto/get-tasks-filter.dto";
+import { Task } from "./task.entity";
+import { TaskStatus } from "./task.status.enum";
+import { TasksRepository } from "./tasks.repository";
+import { ElasticsearchConfigService } from "src/search/ElasticsearchConfig";
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
+    private readonly elasticsearchConfigService: ElasticsearchConfigService
   ) {}
   // private tasks: Task[] = [];
 
@@ -62,7 +64,14 @@ export class TasksService {
   }
 
   async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
-    return this.tasksRepository.createTask(createTaskDto, user);
+    const taskResult = this.tasksRepository.createTask(createTaskDto, user);
+    // Index the user in Elasticsearch after saving in PostgreSQL
+    await this.elasticsearchConfigService.indexDocument(
+      "tasks",
+      user.id.toString(),
+      taskResult
+    );
+    return taskResult;
   }
 
   // createTask(createTaskDto: CreateTaskDto): Task {
@@ -81,7 +90,7 @@ export class TasksService {
   async updateTaskStatus(
     id: string,
     status: TaskStatus,
-    user: User,
+    user: User
   ): Promise<Task> {
     const task = await this.getTaskById(id, user);
     task.status = status;

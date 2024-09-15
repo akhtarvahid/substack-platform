@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ElasticsearchConfigService } from './ElasticsearchConfig';
@@ -18,5 +18,7 @@ import { ElasticsearchConfigService } from './ElasticsearchConfig';
       }),
     }),
   ],
+  exports: [ElasticsearchModule],
+  providers: [ElasticsearchConfigService]
 })
 export class ElasticsearchConfigModule {}
