@@ -44,6 +44,7 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - ELASTICSEARCH_USERNAME=elastic #
       - ELASTICSEARCH_PASSWORD=elastic #
+      - xpack.security.enabled=false
     ports:
       - "9200:9200"
       - "9300:9300"

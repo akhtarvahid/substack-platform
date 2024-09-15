@@ -36,6 +36,10 @@ export class TasksService {
   // }
 
   async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
+    const elasticSearchResult = await this.elasticsearchConfigService.search(
+      filterDto.search
+    );
+    console.log("Elastic search", elasticSearchResult);
     return this.tasksRepository.getTasks(filterDto, user);
   }
 
@@ -64,13 +68,12 @@ export class TasksService {
   }
 
   async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
-    const taskResult = this.tasksRepository.createTask(createTaskDto, user);
-    // Index the user in Elasticsearch after saving in PostgreSQL
-    await this.elasticsearchConfigService.indexDocument(
-      "tasks",
-      user.id.toString(),
-      taskResult
+    const taskResult = await this.tasksRepository.createTask(
+      createTaskDto,
+      user
     );
+    // Index the user in Elasticsearch after saving in PostgreSQL
+    await this.elasticsearchConfigService.indexTask(taskResult);
     return taskResult;
   }
 
