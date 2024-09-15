@@ -18,6 +18,5 @@ import { ElasticsearchConfigService } from './ElasticsearchConfig';
       }),
     }),
   ],
-  providers: [ElasticsearchConfigService],
 })
 export class ElasticsearchConfigModule {}

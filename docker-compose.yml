@@ -27,8 +27,8 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@admin.com  # user to login in the browser
-      PGADMIN_DEFAULT_PASSWORD: pgadmin123      # password to login in the browser
+      PGADMIN_DEFAULT_EMAIL: pgadmin@admin.com # user to login in the browser
+      PGADMIN_DEFAULT_PASSWORD: pgadmin123 # password to login in the browser
     networks:
       - backend_network
     ports:
@@ -36,8 +36,29 @@ services:
     depends_on:
       - postgres_db #  postgres_db - dependent on line 16(postgres_db service: name should be same at both places)
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTICSEARCH_USERNAME=elastic #
+      - ELASTICSEARCH_PASSWORD=elastic #
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - es-net
+
 networks:
   backend_network:
     driver: bridge
+  es-net:
+    driver: bridge  
 volumes:
   postgres_data: {}
+  es_data:
+    driver: local
+  
