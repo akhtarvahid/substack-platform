@@ -5,12 +5,16 @@ import { TasksController } from './tasks.controller';
 import { TasksRepository } from './tasks.repository';
 import { TasksService } from './tasks.service';
 import { ConfigModule } from '@nestjs/config';
-import { ElasticsearchConfigModule } from 'src/search/Search.module';
-import { ElasticsearchConfigService } from 'src/search/ElasticsearchConfig';
+// import { ElasticsearchConfigModule } from 'src/search/Search.module';
+// import { ElasticsearchConfigService } from 'src/search/ElasticsearchConfig';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TasksRepository]), AuthModule, ElasticsearchConfigModule],
+  imports: [TypeOrmModule.forFeature([TasksRepository]), AuthModule, 
+  // ElasticsearchConfigModule
+],
   controllers: [TasksController],
-  providers: [TasksService, ElasticsearchConfigService],
+  providers: [TasksService, 
+    // ElasticsearchConfigService
+  ],
 })
 export class TasksModule {}

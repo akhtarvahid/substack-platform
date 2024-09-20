@@ -6,13 +6,13 @@ import { GetTasksFilterDto } from "./dto/get-tasks-filter.dto";
 import { Task } from "./task.entity";
 import { TaskStatus } from "./task.status.enum";
 import { TasksRepository } from "./tasks.repository";
-import { ElasticsearchConfigService } from "src/search/ElasticsearchConfig";
+// import { ElasticsearchConfigService } from "src/search/ElasticsearchConfig";
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
-    private readonly elasticsearchConfigService: ElasticsearchConfigService
+    // private readonly elasticsearchConfigService: ElasticsearchConfigService
   ) {}
   // private tasks: Task[] = [];
 
@@ -36,10 +36,10 @@ export class TasksService {
   // }
 
   async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
-    const elasticSearchResult = await this.elasticsearchConfigService.search(
-      filterDto.search
-    );
-    console.log("Elastic search", elasticSearchResult);
+    // const elasticSearchResult = await this.elasticsearchConfigService.search(
+    //   filterDto.search
+    // );
+    // console.log("Elastic search", elasticSearchResult);
     return this.tasksRepository.getTasks(filterDto, user);
   }
 
@@ -73,7 +73,7 @@ export class TasksService {
       user
     );
     // Index the user in Elasticsearch after saving in PostgreSQL
-    await this.elasticsearchConfigService.indexTask(taskResult);
+    // await this.elasticsearchConfigService.indexTask(taskResult);
     return taskResult;
   }
 

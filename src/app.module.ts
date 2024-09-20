@@ -4,8 +4,8 @@ import { TasksModule } from "./tasks/tasks.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { configValidationSchema } from "./config.schema";
-import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import { ElasticsearchConfigModule } from "./search/Search.module";
+// import { ElasticsearchModule } from '@nestjs/elasticsearch';
+// import { ElasticsearchConfigModule } from "./search/Search.module";
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { ElasticsearchConfigModule } from "./search/Search.module";
         synchronize: true,
       }),
     }),
-    ElasticsearchConfigModule,
+    // ElasticsearchConfigModule,
     TasksModule,
     AuthModule,
   ],
