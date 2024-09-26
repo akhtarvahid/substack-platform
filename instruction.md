@@ -2,15 +2,14 @@
 # Project
 
 ### substack-platform
-- Create application following command
+Create application following command
 
   > nest new substack-platform
 
-### Running installation
+### Install dependencies
 
   ```bash
   $ npm install
-
   ```
 
   To run postgres using docker
