@@ -14,9 +14,6 @@ npm install
 
 #### To run postgres using docker
  ```bash
-docker run --name substack-platform -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+docker run --name substack -p 5454:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=substack -d postgres
 ```
 #### Run app through docker
-```bash
-docker-compose -f docker-compose.yml up --build -d
-```
