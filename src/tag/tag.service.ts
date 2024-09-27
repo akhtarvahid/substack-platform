@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 export class TagService {
     constructor(@InjectRepository(TagEntity) private readonly tagRepository: Repository<TagEntity>){}
     async findAll(): Promise<TagEntity[]> {
+        // add validation
         return await this.tagRepository.find();
     }
 }
