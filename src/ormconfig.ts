@@ -9,6 +9,6 @@ const config: PostgresConnectionOptions = {
     database: 'substack',
     entities: [__dirname + '/**/*.entity{.ts,.js}'], // path for all the entities
     synchronize: false, // make it true only in dev environment not in prod environment
-    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+    migrations: [__dirname + '/migrations/**/*{.ts,.js}'], // Schema migration
 }
 export default config;
