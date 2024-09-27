@@ -14,8 +14,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       username: 'substack',
       password: 'password',
       database: 'substack',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true
+      entities: [__dirname + '/**/*.entity{.ts,.js}'], // path for all the entities
+      synchronize: true // make it true only in dev environment not in prod environment
     }),
     TagModule,
   ],
