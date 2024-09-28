@@ -72,4 +72,12 @@ export class UserService {
         delete user.password;  // Remove the password field to prevent exposure in the response.
         return user;
     }  
+
+    async getUserById(id: number): Promise<UserEntity> {
+        return this.userRepository.findOne({
+          where: {
+              id
+          }
+        })
+      }
 }

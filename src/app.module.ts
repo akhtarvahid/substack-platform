@@ -1,9 +1,10 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TagModule } from '@app/tag/tag.module';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from './user/user.module';
 import config from "./ormconfig";
+import { AuthMiddleware } from "./user/middlewares/auth.middleware";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,4 +15,11 @@ import config from "./ormconfig";
     UserModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+   consumer.apply(AuthMiddleware).forRoutes({
+    path: '*',
+    method: RequestMethod.ALL
+   })
+  }
+}
