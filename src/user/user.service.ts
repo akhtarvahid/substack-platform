@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -14,9 +14,23 @@ export class UserService {
     }
 
     async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-        const newUser = new UserEntity()
+        const userFoundByEmail = await this.userRepository.findOne({
+            where: {
+                email: createUserDto.email
+            }
+        })
+        const userFoundByUsername = await this.userRepository.findOne({
+            where: {
+                username: createUserDto.username
+            }
+        })
+        if(userFoundByEmail || userFoundByUsername) {
+           throw new HttpException('Email or username already exist', HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        const newUser = new UserEntity();
         Object.assign(newUser, createUserDto);
-      return await this.userRepository.save(newUser);
+        return await this.userRepository.save(newUser);
     }
 
     generateJwt(user: UserEntity): string {
