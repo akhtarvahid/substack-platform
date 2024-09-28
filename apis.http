@@ -40,3 +40,18 @@ GET http://localhost:3000/users/user HTTP/1.1
 content-type: application/json
 Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJuYW1lIjoiVmFoaWQiLCJlbWFpbCI6ImFraHRhcnZhaGlkNTQzQGdtYWlsLmNvbSIsImlhdCI6MTcyNzU0OTM4OSwiZXhwIjozNDU1MTAyMzc4fQ.dOpj3uIZQmUSrL2RmR-2q-hHRHR1K_xXhF4tvVteJaY
 
+
+
+### update user
+
+PUT http://localhost:3000/users/18
+content-type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJuYW1lIjoiVmFoaWQiLCJlbWFpbCI6ImFraHRhcnZhaGlkNTQzQGdtYWlsLmNvbSIsImlhdCI6MTcyNzU0OTM4OSwiZXhwIjozNDU1MTAyMzc4fQ.dOpj3uIZQmUSrL2RmR-2q-hHRHR1K_xXhF4tvVteJaY
+
+{
+    "user": {
+        "username": "Vahid Akhtar",
+        "email": "akhtarvahid543@gmail.com",
+        "password": "12345"
+    }
+}
