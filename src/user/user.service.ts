@@ -64,12 +64,12 @@ export class UserService {
             throw new HttpException('Credentials are not valid', HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        const isPasswordCorrect = await compare(loginUserDto.password, user.password);
-        if(!isPasswordCorrect) {
+        const hasPasswordMatched = await compare(loginUserDto.password, user.password);
+        if(!hasPasswordMatched) {
             throw new HttpException('Credentials are not valid', HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        delete user.password;
+        delete user.password;  // Remove the password field to prevent exposure in the response.
         return user;
     }  
 }

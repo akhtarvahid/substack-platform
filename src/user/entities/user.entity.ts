@@ -18,7 +18,7 @@ export class UserEntity {
     @Column({ default: '' })
     image: string
 
-    @Column({ select: false })
+    @Column({ select: false }) // Excludes the password field from queries by default to prevent fetching it from the database
     password: string;
 
     @BeforeInsert()
