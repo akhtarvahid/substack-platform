@@ -1,0 +1,34 @@
+GET http://localhost:3000/tags/health HTTP/1.1
+
+###
+
+GET http://localhost:3000/tags HTTP/1.1
+
+###
+
+GET http://localhost:3000/user/health HTTP/1.1
+
+###
+
+POST http://localhost:3000/users HTTP/1.1
+content-type: application/json
+
+{
+    "user": {
+        "username": "Vahid",
+        "email": "akhtarvahid543@gmail.com",
+        "password": "12345"
+    }
+}
+
+###
+
+POST http://localhost:3000/users/login HTTP/1.1
+content-type: application/json
+
+{
+    "user": {
+        "email": "akhtarvahid543@gmail.com",
+        "password": "12345"
+    }    
+}
