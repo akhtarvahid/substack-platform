@@ -62,8 +62,20 @@ DELETE http://localhost:3000/users/22
 content-type: application/json
 Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoiVmFoaWQiLCJlbWFpbCI6ImFraHRhcnZhaGlkNTQzQGdtYWlsLmNvbSIsImlhdCI6MTcyNzU5MTQ3OSwiZXhwIjozNDU1MTg2NTU4fQ.FdgNYffrZCYxXZubftkY7GYUqeh4Hrs-M3KgTnHhpyQ
 
-### Product API list
+### Story API list
 
 ### health 
 
-GET http://localhost:3000/product/health HTTP/1.1
+GET http://localhost:3000/story/health HTTP/1.1
+
+### create story
+
+POST http://localhost:3000/story HTTP/1.1
+content-type: application/json
+
+{
+    "story": {
+        "title": "My story 1",
+        "content": "Lets buy a story 2"
+    }    
+}

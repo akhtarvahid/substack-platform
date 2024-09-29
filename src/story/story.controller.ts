@@ -14,6 +14,6 @@ export class StoryController {
 
     @Post()
     async createStory(@Body('story') storyDto: CreateStoryDto): Promise<StoryEntity> {
-        return this.StoryService.create(storyDto)
+        return await this.StoryService.create(storyDto)
     }
 }
