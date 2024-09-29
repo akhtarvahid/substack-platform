@@ -72,7 +72,7 @@ GET http://localhost:3000/story/health HTTP/1.1
 
 POST http://localhost:3000/story HTTP/1.1
 content-type: application/json
-Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJWYWhpZCIsImVtYWlsIjoiYWtodGFydmFoaWQ1NDNAZ21haWwuY29tIiwiaWF0IjoxNzI3NjIxMTEyLCJleHAiOjM0NTUyNDU4MjR9.xfHKY_2Z7hdY3iQ7BoWAgojS6W9pD8RxCSNTIcuu3w8
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJWYWhpZCIsImVtYWlsIjoiYWtodGFydmFoaWQ1NDNAZ21haWwuY29tIiwiaWF0IjoxNzI3NjIxOTE4LCJleHAiOjM0NTUyNDc0MzZ9.Uxy8ZlQmEmzdTxkY6Z9F_pyCJRZRfh9NEfCfhT5bAFY
 
 {
     "story": {
