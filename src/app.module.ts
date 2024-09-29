@@ -5,7 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from './user/user.module';
 import config from "./ormconfig";
 import { AuthMiddleware } from "./user/middlewares/auth.middleware";
-import { ProductModule } from './product/product.module';
+import { StoryModule } from './story/story.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,7 +14,7 @@ import { ProductModule } from './product/product.module';
     TypeOrmModule.forRoot(config),
     TagModule,
     UserModule,
-    ProductModule,
+    StoryModule,
   ],
 })
 export class AppModule {
