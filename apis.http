@@ -61,3 +61,9 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJuYW
 DELETE http://localhost:3000/users/22
 content-type: application/json
 Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoiVmFoaWQiLCJlbWFpbCI6ImFraHRhcnZhaGlkNTQzQGdtYWlsLmNvbSIsImlhdCI6MTcyNzU5MTQ3OSwiZXhwIjozNDU1MTg2NTU4fQ.FdgNYffrZCYxXZubftkY7GYUqeh4Hrs-M3KgTnHhpyQ
+
+### Product API list
+
+### health 
+
+GET http://localhost:3000/product/health HTTP/1.1
