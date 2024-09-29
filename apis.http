@@ -72,10 +72,13 @@ GET http://localhost:3000/story/health HTTP/1.1
 
 POST http://localhost:3000/story HTTP/1.1
 content-type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJWYWhpZCIsImVtYWlsIjoiYWtodGFydmFoaWQ1NDNAZ21haWwuY29tIiwiaWF0IjoxNzI3NjIxMTEyLCJleHAiOjM0NTUyNDU4MjR9.xfHKY_2Z7hdY3iQ7BoWAgojS6W9pD8RxCSNTIcuu3w8
 
 {
     "story": {
         "title": "My story 1",
-        "content": "Lets buy a story 2"
+        "description": "Lets buy a story 2",
+        "body": "This is my first story on the blogging platform",
+        "tagList": ["react", "js"]
     }    
 }

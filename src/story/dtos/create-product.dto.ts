@@ -4,5 +4,12 @@ export class CreateStoryDto {
 
     @IsNotEmpty()
     readonly title: string;
-    readonly content: string;
+
+    readonly description: string;
+
+    @IsNotEmpty()
+    readonly body: string;
+
+    @IsNotEmpty()
+    readonly tagList: string[];
 }
