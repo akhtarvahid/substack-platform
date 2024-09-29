@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Put, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserResponseInterface } from './interface/userResponse.interface';
@@ -47,4 +47,10 @@ export class UserController {
       const user = await this.userService.update(userId, updateUserDto);
       return this.userService.buildUserResponse(user);
     }
+
+   @Delete('/:id')
+   @UseGuards(AuthGuard)
+   async deleteUser(@User('id') userId: number): Promise<String>{
+      return await this.userService.delete(userId);
+   }
 }

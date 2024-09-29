@@ -37,13 +37,16 @@ export class UserService {
     }
 
     async update(userId: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-       
             const user = await this.getUserById(userId);
             Object.assign(user, updateUserDto);
             return await this.userRepository.save(user);
         
     }
 
+    async delete(userId: number): Promise<String> {
+        await this.userRepository.delete(userId);
+        return `User with id ${userId} is successfully deleted`
+    }
     generateJwt(user: UserEntity): string {
         return sign({
           id: user.id,
