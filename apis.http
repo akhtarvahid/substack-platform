@@ -82,3 +82,7 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
         "tagList": ["react", "js"]
     }    
 }
+
+### get by slug 
+
+GET http://localhost:3000/story/story-2-hn87zh HTTP/1.1

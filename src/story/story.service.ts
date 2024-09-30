@@ -42,4 +42,8 @@ export class StoryService {
       story,
     };
   }
+
+  async findBySlug(slug: string): Promise<StoryEntity> {
+    return await this.storyRepository.findOne({ where: { slug }});
+  }
 }

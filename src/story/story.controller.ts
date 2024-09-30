@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dtos/create-product.dto';
 import { StoryEntity } from './entities/story.entity';
@@ -23,7 +23,12 @@ export class StoryController {
         @Body('story') storyDto: CreateStoryDto
     ): Promise<StoryResponseInterface> {
         const story = await this.storyService.create(currentUser, storyDto);
-
         return this.storyService.buildStoryResponse(story);
+    }
+
+    @Get(':slug')
+    async findStoryBySlug(@Param('slug') slug: string): Promise<StoryResponseInterface>{
+       const story = await this.storyService.findBySlug(slug);
+       return this.storyService.buildStoryResponse(story); 
     }
 }
