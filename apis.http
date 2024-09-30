@@ -80,9 +80,24 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
         "description": "Lets buy a story 2",
         "body": "This is my first story on the blogging platform",
         "tagList": ["react", "js"]
-    }    
+    }
 }
 
 ### get by slug 
 
 GET http://localhost:3000/story/story-2-hn87zh HTTP/1.1
+
+
+### Update story by id
+
+PUT http://localhost:3000/story/3
+content-type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJWYWhpZCIsImVtYWlsIjoiYWtodGFydmFoaWQ1NDNAZ21haWwuY29tIiwiaWF0IjoxNzI3NzIwMDIxLCJleHAiOjM0NTU0NDM2NDJ9.m-zYX3A7S-5Tpcyhto1L4e0fyCinNFtlSj3631da9ow
+
+{
+    "story": {
+        "title": "Newly Updated story 1",
+        "description": "Lets buy a story 2",
+        "tagList": ["nodejs", "js"]
+    }
+}

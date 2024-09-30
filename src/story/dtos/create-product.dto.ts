@@ -7,8 +7,8 @@ export class CreateStoryDto {
 
     readonly description: string;
 
-    @IsNotEmpty()
-    readonly body: string;
+    // @IsNotEmpty()
+    // readonly body: string;
 
     @IsNotEmpty()
     readonly tagList: string[];

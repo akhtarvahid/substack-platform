@@ -31,6 +31,17 @@ export class StoryService {
     return await this.storyRepository.save(story);
   }
 
+  async update(
+    storyId: number,
+    storyDto: CreateStoryDto
+  ): Promise<StoryEntity> {
+    const story = await this.storyRepository.findOne({ where: { id: storyId }});
+    story.title = storyDto.title;
+    story.description = storyDto.description;
+    story.tagList = storyDto.tagList;
+    return await this.storyRepository.save(story);
+  }
+
   private buildSlug(title: string): string {
     return (
       slugify(title , { lower: true }) + '-' + ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
