@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dtos/create-product.dto';
 import { StoryEntity } from './entities/story.entity';
@@ -27,15 +27,22 @@ export class StoryController {
         return this.storyService.buildStoryResponse(story);
     }
 
-    @Put(":id")
-    @UseGuards(AuthGuard)
-    async updateStory(
-        @Param('storyId') storyId: number,
-        @Body('story') storyDto: UpdateStoryDto
-    ): Promise<StoryResponseInterface> {
-        const story = await this.storyService.update(storyId, storyDto);
-        return this.storyService.buildStoryResponse(story);
-    }
+  // Private update Story API
+  @Put(":id")
+  @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe())
+  async updateStory(
+    @User("id") currentUserId: number,
+    @Param("id") storyId: number,
+    @Body("story") updateStoryDto: UpdateStoryDto
+  ) {
+    const story = await this.storyService.updateStory(
+      currentUserId,
+      storyId,
+      updateStoryDto
+    );
+    return await this.storyService.buildStoryResponse(story);
+  }
 
     @Get(':slug')
     async findStoryBySlug(@Param('slug') slug: string): Promise<StoryResponseInterface>{

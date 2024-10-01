@@ -3,7 +3,7 @@ export class UpdateStoryDto {
 
   readonly description: string;
 
-  readonly body: string;
+  // readonly body: string;
 
   readonly tagList: string[];
 }

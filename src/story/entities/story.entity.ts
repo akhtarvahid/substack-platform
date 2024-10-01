@@ -32,6 +32,6 @@ export class StoryEntity {
         this.updatedAt = new Date();
     }
 
-    @ManyToOne(() => UserEntity, (user) => user.stories)
+    @ManyToOne(() => UserEntity, (user) => user.stories, { eager: true }) // Eager relations are loaded automatically each time you load entities from the database
     author: UserEntity;
 }

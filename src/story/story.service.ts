@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateStoryDto } from "./dtos/create-product.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { StoryEntity } from "./entities/story.entity";
@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { UserEntity } from "@app/user/entities/user.entity";
 import { StoryResponseInterface } from "./interfaces/story-response.interface";
 import slugify from "slugify";
+import { UpdateStoryDto } from "./dtos/updat-story.dto";
 
 @Injectable()
 export class StoryService {
@@ -31,16 +32,22 @@ export class StoryService {
     return await this.storyRepository.save(story);
   }
 
-  async update(
-    storyId: number,
-    storyDto: CreateStoryDto
-  ): Promise<StoryEntity> {
+  async updateStory(id: number, storyId: number, updateStoryDto: UpdateStoryDto): Promise<StoryEntity> {
     const story = await this.storyRepository.findOne({ where: { id: storyId }});
-    story.title = storyDto.title;
-    story.description = storyDto.description;
-    story.tagList = storyDto.tagList;
+
+    if(!story) {
+      throw new HttpException('story does not exist', HttpStatus.NOT_FOUND)
+    }
+    
+    if(story.author.id !== id) {
+      throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
+    }
+
+    Object.assign(story, updateStoryDto);
+
     return await this.storyRepository.save(story);
   }
+
 
   private buildSlug(title: string): string {
     return (
