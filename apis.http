@@ -101,3 +101,9 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
         "tagList": ["nodejs", "js"]
     }
 }
+
+### Delete story by id
+
+DELETE  http://localhost:3000/story/2
+content-type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJWYWhpZCIsImVtYWlsIjoiYWtodGFydmFoaWQ1NDNAZ21haWwuY29tIiwiaWF0IjoxNzI3NzIwMDIxLCJleHAiOjM0NTU0NDM2NDJ9.m-zYX3A7S-5Tpcyhto1L4e0fyCinNFtlSj3631da9ow

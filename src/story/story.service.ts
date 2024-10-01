@@ -48,6 +48,16 @@ export class StoryService {
     return await this.storyRepository.save(story);
   }
 
+  async delete(
+    currentUserId: number,
+    storyId: number
+  ): Promise<String> {
+    const story = await this.storyRepository.findOne({ where: { id: storyId }});
+    if(storyId && story?.author?.id === currentUserId) {
+      await this.storyRepository.delete(storyId);
+    }
+    return `Successfully delete story of ${storyId}`
+  }
 
   private buildSlug(title: string): string {
     return (

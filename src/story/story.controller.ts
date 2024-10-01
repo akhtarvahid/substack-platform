@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dtos/create-product.dto';
 import { StoryEntity } from './entities/story.entity';
@@ -42,6 +42,20 @@ export class StoryController {
       updateStoryDto
     );
     return await this.storyService.buildStoryResponse(story);
+  }
+
+  // Protected delete story API
+  @Delete(":id")
+  @UseGuards(AuthGuard)
+  async deleteStory(
+    @User("id") currentUserId: number,
+    @Param("id") storyId: number,
+  ): Promise<String> {
+    const story = await this.storyService.delete(
+      currentUserId,
+      storyId,
+    );
+    return story
   }
 
     @Get(':slug')
