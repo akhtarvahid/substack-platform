@@ -112,3 +112,7 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
 ### Find all stories(unprotected)
 
 http://localhost:3000/story/all
+
+### Find all stories filter by tag=java
+
+http://localhost:3000/story/all?tag=java
