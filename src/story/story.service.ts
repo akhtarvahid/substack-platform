@@ -154,4 +154,33 @@ export class StoryService {
     }
     return story;
   }
+
+  async unfavorite(
+    currentUserId: number,
+    slug: string
+  ): Promise<StoryEntity> {
+    const story = await this.findBySlug(slug);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+      relations: ["favorites"],
+    });
+    const storyIndex = user.favorites.findIndex(
+      (storyInFavorites) => storyInFavorites.id === story.id
+    );
+
+    console.log('storyIndex', storyIndex);
+    
+
+    if (storyIndex >= 0) {
+      console.log('Before', JSON.stringify(user.favorites));
+
+      user.favorites.splice(storyIndex, 1);
+      console.log('After', JSON.stringify(user.favorites));
+
+      story.favoritesCount--;
+      await this.userRepository.save(user);
+      await this.storyRepository.save(story);
+    }
+    return story;
+  }
 }

@@ -86,15 +86,25 @@ export class StoryController {
     return this.storyService.buildStoryResponse(story);
   }
 
-  // added story to favorite list
-
-  @Post(':slug/favorite')
+  // added story to user's favorite list
+  @Post(":slug/favorite")
   @UseGuards(AuthGuard)
   async addStoryToFavorites(
-    @User('id') currentUserId: number,
-    @Param('slug') slug: string
-  ): Promise<StoryResponseInterface>{
-    const story = await this.storyService.favorite(currentUserId, slug)
+    @User("id") currentUserId: number,
+    @Param("slug") slug: string
+  ): Promise<StoryResponseInterface> {
+    const story = await this.storyService.favorite(currentUserId, slug);
+    return await this.storyService.buildStoryResponse(story);
+  }
+
+  // Remove story from user's favorite list
+  @Delete(":slug/favorite")
+  @UseGuards(AuthGuard)
+  async removeStoryToFavorites(
+    @User("id") currentUserId: number,
+    @Param("slug") slug: string
+  ): Promise<StoryResponseInterface> {
+    const story = await this.storyService.unfavorite(currentUserId, slug);
     return await this.storyService.buildStoryResponse(story);
   }
 }
