@@ -85,4 +85,16 @@ export class StoryController {
     const story = await this.storyService.findBySlug(slug);
     return this.storyService.buildStoryResponse(story);
   }
+
+  // added story to favorite list
+
+  @Post(':slug/favorite')
+  @UseGuards(AuthGuard)
+  async addStoryToFavorites(
+    @User('id') currentUserId: number,
+    @Param('slug') slug: string
+  ): Promise<StoryResponseInterface>{
+    const story = await this.storyService.favorite(currentUserId, slug)
+    return await this.storyService.buildStoryResponse(story);
+  }
 }

@@ -52,7 +52,7 @@ export class StoryService {
       });
     }
 
-    queryBuilder.orderBy('stories.createdAt', 'DESC');
+    queryBuilder.orderBy("stories.createdAt", "DESC");
     const storiesCount = await queryBuilder.getCount();
 
     if (query.limit) {
@@ -134,5 +134,24 @@ export class StoryService {
 
   async findBySlug(slug: string): Promise<StoryEntity> {
     return await this.storyRepository.findOne({ where: { slug } });
+  }
+
+  async favorite(currentUserId: number, slug: string): Promise<StoryEntity> {
+    const story = await this.findBySlug(slug);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+      relations: ["favorites"],
+    });
+    const isNotFavorite =
+      user.favorites.findIndex((storyExist) => storyExist.id === story.id) ===
+      -1;
+
+    if (isNotFavorite) {
+      user.favorites.push(story);
+      story.favoritesCount++;
+      await this.userRepository.save(user);
+      await this.storyRepository.save(story);
+    }
+    return story;
   }
 }
