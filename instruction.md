@@ -25,4 +25,10 @@ docker run --name substack -p 5454:5432 -e POSTGRES_PASSWORD=password -e POSTGRE
 npm run db:create src/migrations/CreateUsers 
 npm run db:migrate
 ```
+#### Steps to follow for seeding
 
+```bash
+npm run db:drop
+npm run db:migrate
+npm run db:seed
+```
