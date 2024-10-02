@@ -111,10 +111,13 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
 
 ### Find all stories(unprotected)
 
-http://localhost:3000/story/all
+GET http://localhost:3000/story/all
 
 ### Find all stories filter by tag=java
+GET http://localhost:3000/story/all?tag=java
 
-http://localhost:3000/story/all?tag=java
-###
-http://localhost:3000/story/all?author=vahid
+### Find all stories filter by author=vahid
+GET http://localhost:3000/story/all?author=vahid
+
+### Find all stories filter by limit and offset
+GET http://localhost:3000/story/all?limit=2&offset=4

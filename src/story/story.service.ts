@@ -14,45 +14,58 @@ export class StoryService {
   constructor(
     @InjectRepository(StoryEntity)
     private readonly storyRepository: Repository<StoryEntity>,
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private dataSource: DataSource
   ) {}
 
   async findAll(id: number, query: any): Promise<FindAllResponseInterface> {
+    const queryBuilder = this.dataSource
+      .getRepository(StoryEntity)
+      .createQueryBuilder("stories")
+      .leftJoinAndSelect("stories.author", "author");
 
-    const queryBuilder = this.dataSource.getRepository(StoryEntity)
-    .createQueryBuilder('stories').leftJoinAndSelect('stories.author', 'author');
-
-    // Filter by tag 
-    if(query.tag) {
-      queryBuilder.andWhere('stories.tagList LIKE :tag', {
+    // Filter by tag
+    if (query.tag) {
+      queryBuilder.andWhere("stories.tagList LIKE :tag", {
         tag: `%${query.tag}`,
-      })
+      });
     }
 
-     // Filter by author 
-    if(query.author) {
+    // Filter by author
+    if (query.author) {
       const author = await this.userRepository.findOne({
         where: {
-          username: query.author
-        }
+          username: query.author,
+        },
       });
 
-      if(!author) {
-        throw new HttpException('Username does not exist', HttpStatus.NOT_FOUND);
+      if (!author) {
+        throw new HttpException(
+          "Username does not exist",
+          HttpStatus.NOT_FOUND
+        );
       }
 
-      queryBuilder.andWhere('stories.authorId = :id', {
+      queryBuilder.andWhere("stories.authorId = :id", {
         id: author.id,
-      })
+      });
+    }
+    const storiesCount = await queryBuilder.getCount();
+
+    if (query.limit) {
+      queryBuilder.limit(query.limit);
+    }
+
+    if (query.offset) {
+      queryBuilder.offset(query.offset);
+    }
+    const stories = await queryBuilder.getMany();
+    return {
+      stories,
+      storiesCount,
+    };
   }
-  const stories = await queryBuilder.getMany();
-  const storiesCount = await queryBuilder.getCount();
-  return {
-    stories,
-    storiesCount
-  };
-}
 
   async create(
     currentUser: UserEntity,
@@ -71,15 +84,21 @@ export class StoryService {
     return await this.storyRepository.save(story);
   }
 
-  async updateStory(id: number, storyId: number, updateStoryDto: UpdateStoryDto): Promise<StoryEntity> {
-    const story = await this.storyRepository.findOne({ where: { id: storyId }});
+  async updateStory(
+    id: number,
+    storyId: number,
+    updateStoryDto: UpdateStoryDto
+  ): Promise<StoryEntity> {
+    const story = await this.storyRepository.findOne({
+      where: { id: storyId },
+    });
 
-    if(!story) {
-      throw new HttpException('story does not exist', HttpStatus.NOT_FOUND)
+    if (!story) {
+      throw new HttpException("story does not exist", HttpStatus.NOT_FOUND);
     }
-    
-    if(story.author.id !== id) {
-      throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
+
+    if (story.author.id !== id) {
+      throw new HttpException("You are not an author", HttpStatus.FORBIDDEN);
     }
 
     Object.assign(story, updateStoryDto);
@@ -87,21 +106,21 @@ export class StoryService {
     return await this.storyRepository.save(story);
   }
 
-  async delete(
-    currentUserId: number,
-    storyId: number
-  ): Promise<String> {
-    const story = await this.storyRepository.findOne({ where: { id: storyId }});
-    if(storyId && story?.author?.id === currentUserId) {
+  async delete(currentUserId: number, storyId: number): Promise<String> {
+    const story = await this.storyRepository.findOne({
+      where: { id: storyId },
+    });
+    if (storyId && story?.author?.id === currentUserId) {
       await this.storyRepository.delete(storyId);
     }
-    return `Successfully delete story of ${storyId}`
+    return `Successfully delete story of ${storyId}`;
   }
-
 
   private buildSlug(title: string): string {
     return (
-      slugify(title , { lower: true }) + '-' + ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
+      slugify(title, { lower: true }) +
+      "-" +
+      ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
     );
   }
 
@@ -112,6 +131,6 @@ export class StoryService {
   }
 
   async findBySlug(slug: string): Promise<StoryEntity> {
-    return await this.storyRepository.findOne({ where: { slug }});
+    return await this.storyRepository.findOne({ where: { slug } });
   }
 }
