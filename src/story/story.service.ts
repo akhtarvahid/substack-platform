@@ -2,18 +2,57 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateStoryDto } from "./dtos/create-product.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { StoryEntity } from "./entities/story.entity";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { UserEntity } from "@app/user/entities/user.entity";
-import { FindAllResponseInterface, StoryResponseInterface } from "./interfaces/story-response.interface";
+import { StoryResponseInterface } from "./interfaces/story-response.interface";
 import slugify from "slugify";
 import { UpdateStoryDto } from "./dtos/updat-story.dto";
+import { FindAllResponseInterface } from "./interfaces/find-all-story-response.interface";
 
 @Injectable()
 export class StoryService {
   constructor(
     @InjectRepository(StoryEntity)
-    private readonly storyRepository: Repository<StoryEntity>
+    private readonly storyRepository: Repository<StoryEntity>,
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    private dataSource: DataSource
   ) {}
+
+  async findAll(id: number, query: any): Promise<FindAllResponseInterface> {
+
+    const queryBuilder = this.dataSource.getRepository(StoryEntity)
+    .createQueryBuilder('stories').leftJoinAndSelect('stories.author', 'author');
+
+    // Filter by tag 
+    if(query.tag) {
+      queryBuilder.andWhere('stories.tagList LIKE :tag', {
+        tag: `%${query.tag}`,
+      })
+    }
+
+     // Filter by author 
+    if(query.author) {
+      const author = await this.userRepository.findOne({
+        where: {
+          username: query.author
+        }
+      });
+
+      if(!author) {
+        throw new HttpException('Username does not exist', HttpStatus.NOT_FOUND);
+      }
+
+      queryBuilder.andWhere('stories.authorId = :id', {
+        id: author.id,
+      })
+  }
+  const stories = await queryBuilder.getMany();
+  const storiesCount = await queryBuilder.getCount();
+  return {
+    stories,
+    storiesCount
+  };
+}
 
   async create(
     currentUser: UserEntity,
@@ -59,19 +98,6 @@ export class StoryService {
     return `Successfully delete story of ${storyId}`
   }
 
-  async findAll(tag: string,  author: string): Promise<StoryEntity[]> {
-    const stories = await this.storyRepository.find();
-    let filtered;
-    if(tag) {
-      filtered = stories.filter(story => story.tagList?.includes(tag))
-      return filtered;
-    }
-    if(author) {
-      filtered = stories.filter(story => story?.author?.username?.toLowerCase() === author?.toLocaleLowerCase());
-      return filtered;
-    }
-    return stories;
-  }
 
   private buildSlug(title: string): string {
     return (

@@ -4,8 +4,9 @@ import { CreateStoryDto } from './dtos/create-product.dto';
 import { UserEntity } from '@app/user/entities/user.entity';
 import { User } from '@app/user/decorator/user.decorator';
 import { AuthGuard } from '@app/user/guards/auth.guard';
-import { FindAllResponseInterface, StoryResponseInterface } from './interfaces/story-response.interface';
+import { StoryResponseInterface } from './interfaces/story-response.interface';
 import { UpdateStoryDto } from './dtos/updat-story.dto';
+import { FindAllResponseInterface } from './interfaces/find-all-story-response.interface';
 
 @Controller('story')
 export class StoryController {
@@ -14,6 +15,15 @@ export class StoryController {
     @Get('/health')
     health() {
         return 'UP'
+    }
+
+    @Get('/all')
+    async findAllStories(
+      @User("id") currentUserId: number,
+      @Query() query: any
+    ): Promise<FindAllResponseInterface> {
+      const stories = await this.storyService.findAll(currentUserId, query);
+       return stories;
     }
 
     @Post()
@@ -55,18 +65,6 @@ export class StoryController {
       storyId,
     );
     return story
-  }
-
-  @Get('/all')
-  async findAllStories(
-    @Query('tag') tag: string,
-    @Query('author') author: string
-  ): Promise<FindAllResponseInterface> {
-    const stories = await this.storyService.findAll(tag, author);
-    const result = stories.map(story => this.storyService.buildStoryResponse(story));
-    return {
-      stories: result
-    };
   }
 
     @Get(':slug')
