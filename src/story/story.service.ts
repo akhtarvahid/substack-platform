@@ -19,7 +19,10 @@ export class StoryService {
     private dataSource: DataSource
   ) {}
 
-  async findAll(id: number, query: any): Promise<FindAllResponseInterface> {
+  async findAll(
+    currentUserId: number,
+    query: any
+  ): Promise<FindAllResponseInterface> {
     const queryBuilder = this.dataSource
       .getRepository(StoryEntity)
       .createQueryBuilder("stories")
@@ -52,6 +55,21 @@ export class StoryService {
       });
     }
 
+    if (query.favorited) {
+      const author = await this.userRepository.findOne({
+        where: { username: query.favorited },
+        relations: ["favorites"],
+      });
+
+      const ids = author?.favorites.map((fav) => fav.id);
+      if (ids.length > 0) {
+        queryBuilder.andWhere("stories.id IN (:...ids)", { ids });
+      } else {
+        // to return [] if ids don't exist
+        queryBuilder.andWhere("1=0");
+      }
+    }
+
     queryBuilder.orderBy("stories.createdAt", "DESC");
     const storiesCount = await queryBuilder.getCount();
 
@@ -62,11 +80,23 @@ export class StoryService {
     if (query.offset) {
       queryBuilder.offset(query.offset);
     }
+
+    let favoriteIds: number[] = [];
+    if (currentUserId) {
+      const currentUser = await this.userRepository.findOne({
+        where: { id: currentUserId },
+        relations: ["favorites"],
+      });
+
+      favoriteIds = currentUser.favorites.map((fav) => fav.id);
+    }
+
     const stories = await queryBuilder.getMany();
-    return {
-      stories,
-      storiesCount,
-    };
+    const favoriteStories = stories.map((story) => {
+      const favorited = favoriteIds.includes(story.id);
+      return { ...story, favorited };
+    });
+    return { stories: favoriteStories, storiesCount };
   }
 
   async create(
@@ -155,10 +185,7 @@ export class StoryService {
     return story;
   }
 
-  async unfavorite(
-    currentUserId: number,
-    slug: string
-  ): Promise<StoryEntity> {
+  async unfavorite(currentUserId: number, slug: string): Promise<StoryEntity> {
     const story = await this.findBySlug(slug);
     const user = await this.userRepository.findOne({
       where: { id: currentUserId },
@@ -168,14 +195,13 @@ export class StoryService {
       (storyInFavorites) => storyInFavorites.id === story.id
     );
 
-    console.log('storyIndex', storyIndex);
-    
+    console.log("storyIndex", storyIndex);
 
     if (storyIndex >= 0) {
-      console.log('Before', JSON.stringify(user.favorites));
+      console.log("Before", JSON.stringify(user.favorites));
 
       user.favorites.splice(storyIndex, 1);
-      console.log('After', JSON.stringify(user.favorites));
+      console.log("After", JSON.stringify(user.favorites));
 
       story.favoritesCount--;
       await this.userRepository.save(user);

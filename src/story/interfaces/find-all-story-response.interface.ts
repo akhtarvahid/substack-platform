@@ -1,6 +1,6 @@
-import { StoryEntity } from "../entities/story.entity";
+import { StoryType } from "./story.type";
 
 export interface FindAllResponseInterface {
-    stories: StoryEntity[];
+    stories: StoryType[];
     storiesCount: number;
 }
