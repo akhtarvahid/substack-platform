@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dtos/create-product.dto';
-import { StoryEntity } from './entities/story.entity';
 import { UserEntity } from '@app/user/entities/user.entity';
 import { User } from '@app/user/decorator/user.decorator';
 import { AuthGuard } from '@app/user/guards/auth.guard';
-import { StoryResponseInterface } from './interfaces/story-response.interface';
+import { FindAllResponseInterface, StoryResponseInterface } from './interfaces/story-response.interface';
 import { UpdateStoryDto } from './dtos/updat-story.dto';
 
 @Controller('story')
@@ -56,6 +55,15 @@ export class StoryController {
       storyId,
     );
     return story
+  }
+
+  @Get('/all')
+  async findAllStories(): Promise<FindAllResponseInterface> {
+    const stories = await this.storyService.findAll();
+    const result = stories.map(story => this.storyService.buildStoryResponse(story));
+    return {
+      stories: result
+    };
   }
 
     @Get(':slug')

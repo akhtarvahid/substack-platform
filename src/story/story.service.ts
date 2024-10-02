@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { StoryEntity } from "./entities/story.entity";
 import { Repository } from "typeorm";
 import { UserEntity } from "@app/user/entities/user.entity";
-import { StoryResponseInterface } from "./interfaces/story-response.interface";
+import { FindAllResponseInterface, StoryResponseInterface } from "./interfaces/story-response.interface";
 import slugify from "slugify";
 import { UpdateStoryDto } from "./dtos/updat-story.dto";
 
@@ -57,6 +57,10 @@ export class StoryService {
       await this.storyRepository.delete(storyId);
     }
     return `Successfully delete story of ${storyId}`
+  }
+
+  async findAll(): Promise<StoryEntity[]> {
+    return await this.storyRepository.find();
   }
 
   private buildSlug(title: string): string {
