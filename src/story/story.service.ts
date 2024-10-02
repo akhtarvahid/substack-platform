@@ -51,6 +51,8 @@ export class StoryService {
         id: author.id,
       });
     }
+
+    queryBuilder.orderBy('stories.createdAt', 'DESC');
     const storiesCount = await queryBuilder.getCount();
 
     if (query.limit) {
