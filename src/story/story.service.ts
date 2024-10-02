@@ -59,11 +59,15 @@ export class StoryService {
     return `Successfully delete story of ${storyId}`
   }
 
-  async findAll(tag: string): Promise<StoryEntity[]> {
+  async findAll(tag: string,  author: string): Promise<StoryEntity[]> {
     const stories = await this.storyRepository.find();
     let filtered;
     if(tag) {
       filtered = stories.filter(story => story.tagList?.includes(tag))
+      return filtered;
+    }
+    if(author) {
+      filtered = stories.filter(story => story?.author?.username?.toLowerCase() === author?.toLocaleLowerCase());
       return filtered;
     }
     return stories;

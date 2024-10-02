@@ -58,8 +58,11 @@ export class StoryController {
   }
 
   @Get('/all')
-  async findAllStories(@Query('tag') tag: string): Promise<FindAllResponseInterface> {
-    const stories = await this.storyService.findAll(tag);
+  async findAllStories(
+    @Query('tag') tag: string,
+    @Query('author') author: string
+  ): Promise<FindAllResponseInterface> {
+    const stories = await this.storyService.findAll(tag, author);
     const result = stories.map(story => this.storyService.buildStoryResponse(story));
     return {
       stories: result

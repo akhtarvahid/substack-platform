@@ -116,3 +116,5 @@ http://localhost:3000/story/all
 ### Find all stories filter by tag=java
 
 http://localhost:3000/story/all?tag=java
+###
+http://localhost:3000/story/all?author=vahid
