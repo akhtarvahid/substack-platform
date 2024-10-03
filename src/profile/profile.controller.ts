@@ -12,7 +12,7 @@ import { ProfileResponseInterface } from "./interface/profile-response.interface
 import { ProfileService } from "./profile.service";
 import { AuthGuard } from "@app/user/guards/auth.guard";
 
-@Controller("profile")
+@Controller("profiles")
 export class ProfileController {
   @Inject() profileService: ProfileService;
   @Get("/health")

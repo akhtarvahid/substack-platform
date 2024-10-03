@@ -20,11 +20,18 @@ export class ProfileService {
       where: { username },
     });
 
+    const follow = await this.followRepository.findOne({
+      where: {
+        followerId: userId,
+        followingId: user.id,
+      },
+    });
+
     if (!user) {
       throw new HttpException("Profile does not exist", HttpStatus.NOT_FOUND);
     }
 
-    return { ...user, following: false };
+    return { ...user, following: Boolean(follow) };
   }
 
   async follow(
@@ -81,12 +88,10 @@ export class ProfileService {
       );
     }
 
-
-      await this.followRepository.delete({
-        followerId: currentUserId,
-        followingId: user.id
-      });
-    
+    await this.followRepository.delete({
+      followerId: currentUserId,
+      followingId: user.id,
+    });
 
     return { ...user, following: false };
   }
