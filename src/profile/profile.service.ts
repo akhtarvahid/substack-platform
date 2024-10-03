@@ -54,15 +54,42 @@ export class ProfileService {
     });
 
     if (!follow) {
-      const followToCreate = new FollowEntity();
-      (followToCreate.followerId = currentUserId),
-        (followToCreate.followingId = user.id),
-        await this.followRepository.save(followToCreate);
+      const followEntity = new FollowEntity();
+      followEntity.followerId = currentUserId;
+      followEntity.followingId = user.id;
+      await this.followRepository.save(followEntity);
     }
 
     return { ...user, following: true };
   }
+  async unfollow(
+    currentUserId: number,
+    profile_username: string
+  ): Promise<ProfileType> {
+    const user = await this.userRepository.findOne({
+      where: { username: profile_username },
+    });
 
+    if (!user) {
+      throw new HttpException("Profile does not exist", HttpStatus.NOT_FOUND);
+    }
+
+    if (user.id === currentUserId) {
+      throw new HttpException(
+        "Follower and Following cant be equal",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+
+      await this.followRepository.delete({
+        followerId: currentUserId,
+        followingId: user.id
+      });
+    
+
+    return { ...user, following: false };
+  }
   buildProfileResponse(profile): ProfileResponseInterface {
     // discard disclosing email.
     delete profile.email;
