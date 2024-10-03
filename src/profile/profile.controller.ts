@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from "@nestjs/common";
 
-@Controller('profile')
-export class ProfileController {}
+@Controller("profile")
+export class ProfileController {
+  @Get("/health")
+  health() {
+    return "UP";
+  }
+}
