@@ -119,6 +119,9 @@ GET http://localhost:3000/story/all?tag=java
 ### Find all stories filter by author=vahid
 GET http://localhost:3000/story/all?author=vahid
 
+### Find all stories using filter, limit, and offset.
+GET http://localhost:3000/story/all?author=vahid&limit=2&offset=2
+
 ### Find all stories filter by limit and offset
 GET http://localhost:3000/story/all?limit=2&offset=4
 

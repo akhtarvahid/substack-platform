@@ -25,6 +25,8 @@ export class ProfileService {
   }
 
   buildProfileResponse(profile): ProfileResponseInterface {
+    // discard disclosing email.
+    delete profile.email;
     return {
       profile,
     };
