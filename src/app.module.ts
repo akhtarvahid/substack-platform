@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import config from "./ormconfig";
 import { AuthMiddleware } from "./user/middlewares/auth.middleware";
 import { StoryModule } from './story/story.module';
+import { ProfileModule } from './profile/profile.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,6 +16,7 @@ import { StoryModule } from './story/story.module';
     TagModule,
     UserModule,
     StoryModule,
+    ProfileModule,
   ],
 })
 export class AppModule {
