@@ -27,7 +27,7 @@ docker run --name substack -p 5454:5432 -e POSTGRES_PASSWORD=password -e POSTGRE
 #### Run app through docker
 
 ### Migrations
-#### Create and run migration
+#### Create and run migration for new entity file
 
 ```bash
 npm run db:create src/migrations/CreateUsers 
