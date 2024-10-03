@@ -4,9 +4,10 @@ import { StoryService } from './story.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoryEntity } from './entities/story.entity';
 import { UserEntity } from '@app/user/entities/user.entity';
+import { FollowEntity } from '@app/profile/entities/follow.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([StoryEntity, UserEntity])],
+  imports: [TypeOrmModule.forFeature([StoryEntity, UserEntity, FollowEntity])],
   controllers: [StoryController],
   providers: [StoryService]
 })

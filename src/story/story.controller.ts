@@ -40,6 +40,17 @@ export class StoryController {
     return stories;
   }
 
+  // Logged in user story feed API
+  @Get("/feed")
+  @UseGuards(AuthGuard)
+  async getStoryFeed(
+    @User("id") currentUserId: number,
+    @Query() query: any
+  ): Promise<FindAllResponseInterface> {
+    const stories = await this.storyService.feed(currentUserId, query);
+    return stories;
+  }
+
   @Post()
   @UseGuards(AuthGuard)
   async createStory(

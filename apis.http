@@ -157,3 +157,8 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbW
 DELETE http://localhost:3000/profiles/Akhtar/unfollow
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+### Feed of the following profiles(feed for current user)
+GET http://localhost:3000/story/feed
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY

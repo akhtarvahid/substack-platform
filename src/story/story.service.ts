@@ -8,6 +8,7 @@ import { StoryResponseInterface } from "./interfaces/story-response.interface";
 import slugify from "slugify";
 import { UpdateStoryDto } from "./dtos/updat-story.dto";
 import { FindAllResponseInterface } from "./interfaces/find-all-story-response.interface";
+import { FollowEntity } from "@app/profile/entities/follow.entity";
 
 @Injectable()
 export class StoryService {
@@ -16,6 +17,8 @@ export class StoryService {
     private readonly storyRepository: Repository<StoryEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(FollowEntity)
+    private readonly followRepository: Repository<FollowEntity>,
     private dataSource: DataSource
   ) {}
 
@@ -99,6 +102,44 @@ export class StoryService {
     return { stories: favoriteStories, storiesCount };
   }
 
+  async feed(
+    currentUserId: number,
+    query: any
+  ): Promise<FindAllResponseInterface> {
+    const follows = await this.followRepository.find({
+      where: {
+        followerId: currentUserId,
+      },
+    });
+
+    if (follows.length === 0) {
+      return {
+        stories: [],
+        storiesCount: 0,
+      };
+    }
+
+    const followingProfileIds = follows.map((foll) => foll.followingId);
+    const queryBuilder = this.dataSource
+      .getRepository(StoryEntity)
+      .createQueryBuilder("stories")
+      .leftJoinAndSelect("stories.author", "author")
+      .where("stories.authorId IN (:...ids)", { ids: followingProfileIds });
+
+    queryBuilder.orderBy("stories.createdAt", "DESC");
+    const storiesCount = await queryBuilder.getCount();
+
+    if (query.limit) {
+      queryBuilder.limit(query.limit);
+    }
+
+    if (query.offset) {
+      queryBuilder.offset(query.offset);
+    }
+
+    const stories = await queryBuilder.getMany();
+    return { stories, storiesCount };
+  }
   async create(
     currentUser: UserEntity,
     storyDto: CreateStoryDto
