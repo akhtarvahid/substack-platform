@@ -20,6 +20,7 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const errorResponse = { errors: {} };
     const userFoundByEmail = await this.userRepository.findOne({
       where: {
         email: createUserDto.email,
@@ -30,11 +31,15 @@ export class UserService {
         username: createUserDto.username,
       },
     });
+
+    if (userFoundByEmail) {
+      errorResponse.errors["email"] = "has already been taken";
+    }
+    if (userFoundByUsername) {
+      errorResponse.errors["username"] = "has already been taken";
+    }
     if (userFoundByEmail || userFoundByUsername) {
-      throw new HttpException(
-        "Email or username already exist",
-        HttpStatus.UNPROCESSABLE_ENTITY
-      );
+      throw new HttpException(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     const newUser = new UserEntity();
@@ -77,6 +82,11 @@ export class UserService {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+    const errorResponse = {
+      errors: {
+        "email or password": "is invalid",
+      },
+    };
     const user = await this.userRepository.findOne({
       where: {
         email: loginUserDto.email,
@@ -85,10 +95,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new HttpException(
-        "Credentials are not valid",
-        HttpStatus.UNPROCESSABLE_ENTITY
-      );
+      throw new HttpException(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     const hasPasswordMatched = await compare(
@@ -96,10 +103,7 @@ export class UserService {
       user.password
     );
     if (!hasPasswordMatched) {
-      throw new HttpException(
-        "Credentials are not valid",
-        HttpStatus.UNPROCESSABLE_ENTITY
-      );
+      throw new HttpException(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     delete user.password; // Remove the password field to prevent exposure in the response.
