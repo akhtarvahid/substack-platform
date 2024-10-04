@@ -20,6 +20,7 @@ import { AuthGuard } from "@app/user/guards/auth.guard";
 import { StoryResponseInterface } from "./interfaces/story-response.interface";
 import { UpdateStoryDto } from "./dtos/updat-story.dto";
 import { FindAllResponseInterface } from "./interfaces/find-all-story-response.interface";
+import { GlobalValidationPipe } from "@app/shared/pipes/global-validation.pipe";
 
 @Controller("story")
 export class StoryController {
@@ -53,6 +54,7 @@ export class StoryController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @UsePipes(new GlobalValidationPipe())
   async createStory(
     @User() currentUser: UserEntity,
     @Body("story") storyDto: CreateStoryDto

@@ -8,6 +8,7 @@ import { User } from './decorator/user.decorator';
 import { UserEntity } from './entities/user.entity';
 import { AuthGuard } from './guards/auth.guard';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { GlobalValidationPipe } from '@app/shared/pipes/global-validation.pipe';
 
 @Controller('users')
 export class UserController {
@@ -19,14 +20,14 @@ export class UserController {
      }
 
      @Post()
-     @UsePipes(new ValidationPipe())
+     @UsePipes(new GlobalValidationPipe())
      async createUser(@Body('user') createUserDto: CreateUserDto): Promise<UserResponseInterface> {
       const user = await this.userService.create(createUserDto);
       return this.userService.buildUserResponse(user);
      }
 
      @Post('/login')
-     @UsePipes(new ValidationPipe())
+     @UsePipes(new GlobalValidationPipe())
      async loginUser(@Body('user') loginUserDto: LoginUserDto): Promise<UserResponseInterface> {
       const user = await this.userService.login(loginUserDto);
       return this.userService.buildUserResponse(user);
