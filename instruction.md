@@ -61,7 +61,7 @@ Command to generate module, controller, service
 [Reference](https://docs.nestjs.com/cli/usages#nest-generate)
 
 ```js
-nest g mo profile --no-spec // If you need test file then remove --no-spec
-nest g co profile --no-spec
-nest g s profile --no-spec
+nest g mo module_name --no-spec // If you need test file then remove --no-spec
+nest g co module_name --no-spec
+nest g s module_name --no-spec
 ```

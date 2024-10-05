@@ -6,6 +6,7 @@ import { UserModule } from "./user/user.module";
 import { AuthMiddleware } from "./user/middlewares/auth.middleware";
 import { StoryModule } from "./story/story.module";
 import { ProfileModule } from "./profile/profile.module";
+import { CommentsModule } from './comments/comments.module';
 import ormConfig from "./ormconfig";
 
 @Module({
@@ -18,6 +19,7 @@ import ormConfig from "./ormconfig";
     UserModule,
     StoryModule,
     ProfileModule,
+    CommentsModule,
   ],
 })
 export class AppModule {
