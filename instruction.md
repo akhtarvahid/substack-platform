@@ -1,35 +1,33 @@
-## grqphql-nestjs > substack-platform
+grqphql-nestjs > substack
 
+# Substack
+**Project Description: Substack blog Application**
 
-### Command to generate module, controller, service
+The goal of this project is to build a robust, scalable, and modern blog platform that enables users to write, read, and share blogs seamlessly. The application will be designed with a microservices architecture to ensure modularity, scalability, and maintainability, leveraging a variety of cutting-edge technologies.
 
-[Reference](https://docs.nestjs.com/cli/usages#nest-generate)
+How to clone and start the application
 
-```js
-nest g mo profile --no-spec // If you need test file then remove --no-spec
-nest g co profile --no-spec
-nest g s profile --no-spec
+```bash
+git clone https://github.com/akhtarvahid/substack
+cd substack
 ```
-
-### substack-platform
-
-Create application following command
-
-> nest new substack-platform
 
 ### Install dependencies
 
 ```bash
-npm install
+substack> npm install
 ```
 
-#### To run postgres using docker
+#### Run docker command to start postgres server
 
 ```bash
 docker run --name substack -p 5454:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=substack -d postgres
 ```
 
-#### Run app through docker
+#### Run app now(running through nodemon)
+```bash 
+npm start
+```
 
 ### Migrations
 
@@ -51,3 +49,19 @@ npm run db:seed
 ### Schema Design
 
 Schema design using https://www.eraser.io/
+
+NOTE:
+
+---
+
+## Nestjs official
+
+Command to generate module, controller, service
+
+[Reference](https://docs.nestjs.com/cli/usages#nest-generate)
+
+```js
+nest g mo profile --no-spec // If you need test file then remove --no-spec
+nest g co profile --no-spec
+nest g s profile --no-spec
+```
