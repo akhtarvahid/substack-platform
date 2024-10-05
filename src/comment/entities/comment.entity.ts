@@ -15,6 +15,6 @@ export class CommentEntity {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
 
-  @ManyToOne(() => StoryEntity, (story) => story.comments)
+  @ManyToOne(() => StoryEntity, (story) => story.comments, { eager: true })
   story: StoryEntity;
 }

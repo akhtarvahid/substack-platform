@@ -1,9 +1,11 @@
+import { CommentEntity } from "@app/comment/entities/comment.entity";
 import { UserEntity } from "@app/user/entities/user.entity";
 import {
   BeforeUpdate,
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -40,4 +42,7 @@ export class StoryEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.stories, { eager: true }) // Eager relations are loaded automatically each time you load entities from the database
   author: UserEntity;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.story)
+  comments: CommentEntity[];
 }
