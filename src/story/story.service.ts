@@ -102,7 +102,7 @@ export class StoryService {
     return { stories: favoriteStories, storiesCount };
   }
 
-  async feed(
+  async storyFeeds(
     currentUserId: number,
     query: any
   ): Promise<FindAllResponseInterface> {
@@ -189,14 +189,6 @@ export class StoryService {
     return `Successfully delete story of ${storyId}`;
   }
 
-  private buildSlug(title: string): string {
-    return (
-      slugify(title, { lower: true }) +
-      "-" +
-      ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
-    );
-  }
-
   buildStoryResponse(story: StoryEntity): StoryResponseInterface {
     return {
       story,
@@ -236,18 +228,21 @@ export class StoryService {
       (storyInFavorites) => storyInFavorites.id === story.id
     );
 
-    console.log("storyIndex", storyIndex);
-
     if (storyIndex >= 0) {
-      console.log("Before", JSON.stringify(user.favorites));
-
       user.favorites.splice(storyIndex, 1);
-      console.log("After", JSON.stringify(user.favorites));
 
       story.favoritesCount--;
       await this.userRepository.save(user);
       await this.storyRepository.save(story);
     }
     return story;
+  }
+
+  private buildSlug(title: string): string {
+    return (
+      slugify(title, { lower: true }) +
+      "-" +
+      ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
+    );
   }
 }

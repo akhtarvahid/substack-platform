@@ -1,37 +1,43 @@
 import { UserEntity } from "@app/user/entities/user.entity";
-import { BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeUpdate,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity({ name: 'stories'})
+@Entity({ name: "stories" })
 export class StoryEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    slug: string;
+  @Column()
+  slug: string;
 
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 
-    @Column({ default: ''})
-    description: string;
+  @Column({ default: "" })
+  description: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    createdAt: Date;
-    
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    updatedAt: Date;
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  createdAt: Date;
 
-    @Column('simple-array')
-    tagList: string[];
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: Date;
 
-    @Column({ default: 0 })
-    favoritesCount: number;
+  @Column("simple-array")
+  tagList: string[];
 
-    @BeforeUpdate()
-    updateTimestamp() {
-        this.updatedAt = new Date();
-    }
+  @Column({ default: 0 })
+  favoritesCount: number;
 
-    @ManyToOne(() => UserEntity, (user) => user.stories, { eager: true }) // Eager relations are loaded automatically each time you load entities from the database
-    author: UserEntity;
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
+
+  @ManyToOne(() => UserEntity, (user) => user.stories, { eager: true }) // Eager relations are loaded automatically each time you load entities from the database
+  author: UserEntity;
 }

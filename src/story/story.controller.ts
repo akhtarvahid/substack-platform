@@ -37,8 +37,7 @@ export class StoryController {
     @User("id") currentUserId: number,
     @Query() query: any
   ): Promise<FindAllResponseInterface> {
-    const stories = await this.storyService.findAll(currentUserId, query);
-    return stories;
+    return await this.storyService.findAll(currentUserId, query);
   }
 
   // Logged in user story feed API
@@ -48,8 +47,7 @@ export class StoryController {
     @User("id") currentUserId: number,
     @Query() query: any
   ): Promise<FindAllResponseInterface> {
-    const stories = await this.storyService.feed(currentUserId, query);
-    return stories;
+    return await this.storyService.storyFeeds(currentUserId, query);
   }
 
   @Post()
@@ -66,12 +64,12 @@ export class StoryController {
   // Private update Story API
   @Put(":id")
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new GlobalValidationPipe())
   async updateStory(
     @User("id") currentUserId: number,
     @Param("id") storyId: number,
     @Body("story") updateStoryDto: UpdateStoryDto
-  ) {
+  ): Promise<StoryResponseInterface> {
     const story = await this.storyService.updateStory(
       currentUserId,
       storyId,
@@ -87,8 +85,7 @@ export class StoryController {
     @User("id") currentUserId: number,
     @Param("id") storyId: number
   ): Promise<String> {
-    const story = await this.storyService.delete(currentUserId, storyId);
-    return story;
+    return await this.storyService.delete(currentUserId, storyId);
   }
 
   @Get(":slug")
