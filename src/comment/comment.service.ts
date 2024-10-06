@@ -4,6 +4,7 @@ import { CommentEntity } from "./entities/comment.entity";
 import { Repository } from "typeorm";
 import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
+import { CommentResponseInterface } from "./interfaces/create-response.interface";
 
 @Injectable()
 export class CommentService {
@@ -13,15 +14,16 @@ export class CommentService {
     @InjectRepository(StoryEntity)
     private readonly storyRepository: Repository<StoryEntity>
   ) {}
-  async create(id: number, createCommentDto: CreateCommentDto): Promise<any> {
-    const story = await this.storyRepository.findOne({ where: { id } });
+
+  // Use dto interface to return selected fields
+  async create(storyId: number, createCommentDto: CreateCommentDto): Promise<CommentResponseInterface> {
+    const story = await this.storyRepository.findOne({ where: { id: storyId } });
     const comment = new CommentEntity();
     Object.assign(comment, createCommentDto);
 
     comment.story = story;
-    delete comment.story.author;
-    delete comment.story.comments;
-    delete comment.story.tagList;
+    comment.storyId = storyId;
+    delete comment.story;
 
     return await this.commentRepository.save(comment);
   }

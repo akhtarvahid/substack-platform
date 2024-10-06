@@ -154,6 +154,7 @@ export class StoryService {
     story.slug = this.buildSlug(storyDto.title);
 
     story.author = currentUser;
+    story.comments = [];
     return await this.storyRepository.save(story);
   }
 
