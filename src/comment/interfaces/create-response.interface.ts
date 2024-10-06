@@ -1,5 +1,5 @@
 import { CommentEntity } from "../entities/comment.entity";
 
-export interface CommentResponseInterface extends CommentEntity {
+export class CommentResponseType extends CommentEntity {
   storyId: number;
 }

@@ -18,6 +18,6 @@ export class CommentEntity {
   @Column()
   storyId: number;
 
-  @ManyToOne(() => StoryEntity, (story) => story.comments, { eager: true })
+  @ManyToOne(() => StoryEntity, (story) => story.comments)
   story: StoryEntity;
 }

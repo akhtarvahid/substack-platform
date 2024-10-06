@@ -43,6 +43,6 @@ export class StoryEntity {
   @ManyToOne(() => UserEntity, (user) => user.stories, { eager: true }) // Eager relations are loaded automatically each time you load entities from the database
   author: UserEntity;
 
-  @OneToMany(() => CommentEntity, (comment) => comment.story)
+  @OneToMany(() => CommentEntity, (comment) => comment.story, { eager: true })
   comments: CommentEntity[];
 }
