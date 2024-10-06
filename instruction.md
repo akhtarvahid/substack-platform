@@ -48,7 +48,8 @@ npm run db:seed
 
 ### Schema Design
 
-Schema design using https://www.eraser.io/
+[Schema design](https://app.eraser.io/workspace/9BRBw81GcgJIOQkrYP2w?origin=share)
+
 
 NOTE:
 
