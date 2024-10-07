@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
@@ -22,7 +30,10 @@ export class CommentController {
   }
 
   @Get("/comments")
-  async comments(@Param("id") storyId: number): Promise<StoryCommentsResponse> {
-    return await this.commentService.findStoryComments(storyId);
+  async comments(
+    @Param("id") storyId: number,
+    @Query() query: any
+  ): Promise<StoryCommentsResponse> {
+    return await this.commentService.findStoryComments(storyId, query);
   }
 }

@@ -29,7 +29,10 @@ export class CommentService {
     return await this.commentRepository.save(comment);
   }
 
-  async findStoryComments(storyId: number): Promise<StoryCommentsResponse> {
+  async findStoryComments(
+    storyId: number,
+    query: any
+  ): Promise<StoryCommentsResponse> {
     const queryBuilder = this.dataSource
       .getRepository(CommentEntity)
       .createQueryBuilder("comments")
@@ -38,6 +41,15 @@ export class CommentService {
 
     queryBuilder.orderBy("comments.createdAt", "DESC");
     const storyCommentsCount = await queryBuilder.getCount();
+
+    if (query.limit) {
+      queryBuilder.limit(query.limit);
+    }
+
+    if (query.offset) {
+      queryBuilder.offset(query.offset);
+    }
+
     const comments = await queryBuilder.getMany();
     const storyComments = comments?.map((comment) => ({
       storyId,
