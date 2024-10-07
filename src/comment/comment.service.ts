@@ -6,6 +6,8 @@ import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
 import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
+import { UpdateCommentDto } from "./dtos/update-comment.dto";
+import { UpdateResponseType } from "./interfaces/update-response.interface";
 
 @Injectable()
 export class CommentService {
@@ -25,6 +27,20 @@ export class CommentService {
     Object.assign(comment, createCommentDto);
 
     comment.storyId = storyId;
+
+    return await this.commentRepository.save(comment);
+  }
+
+  async update(
+    storyId: number,
+    commentId: number,
+    updateCommentDto: UpdateCommentDto
+  ): Promise<UpdateResponseType> {
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, storyId: storyId },
+    });
+
+    Object.assign(comment, updateCommentDto);
 
     return await this.commentRepository.save(comment);
   }
@@ -63,7 +79,7 @@ export class CommentService {
     return {
       storyComments,
       storyCommentsCount,
-      resultCount
+      resultCount,
     };
   }
 }

@@ -5,12 +5,15 @@ import {
   Inject,
   Param,
   Post,
+  Put,
   Query,
 } from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
 import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
+import { UpdateCommentDto } from "./dtos/update-comment.dto";
+import { UpdateResponseType } from "./interfaces/update-response.interface";
 
 @Controller("stories/:id")
 export class CommentController {
@@ -19,6 +22,13 @@ export class CommentController {
   @Get("/health")
   health() {
     return "COMMENTS UP";
+  }
+  @Get("/comments")
+  async comments(
+    @Param("id") storyId: number,
+    @Query() query: any
+  ): Promise<StoryCommentsResponse> {
+    return await this.commentService.findStoryComments(storyId, query);
   }
 
   @Post("/comments")
@@ -29,11 +39,14 @@ export class CommentController {
     return await this.commentService.create(storyId, createCommentDto);
   }
 
-  @Get("/comments")
-  async comments(
+  @Put("/comments/:commentId")
+  async updateComment(
     @Param("id") storyId: number,
-    @Query() query: any
-  ): Promise<StoryCommentsResponse> {
-    return await this.commentService.findStoryComments(storyId, query);
+    @Param("commentId") commentId: number,
+    @Body("comment") updateCommentDto: UpdateCommentDto
+  ): Promise<UpdateResponseType> {
+    return await this.commentService.update(storyId, commentId, updateCommentDto);
   }
+
+
 }
