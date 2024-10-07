@@ -51,6 +51,7 @@ export class CommentService {
     }
 
     const comments = await queryBuilder.getMany();
+    const resultCount = Math.ceil(storyCommentsCount / query.limit);
     const storyComments = comments?.map((comment) => ({
       storyId,
       id: comment?.id,
@@ -62,6 +63,7 @@ export class CommentService {
     return {
       storyComments,
       storyCommentsCount,
+      resultCount
     };
   }
 }

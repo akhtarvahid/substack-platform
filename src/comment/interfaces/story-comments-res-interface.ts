@@ -1,6 +1,7 @@
 export class StoryCommentsResponse {
   storyComments: CommentsResponse[];
   storyCommentsCount: number;
+  resultCount: number;
 }
 
 class CommentsResponse {
