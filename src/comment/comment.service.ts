@@ -5,6 +5,7 @@ import { DataSource, Repository } from "typeorm";
 import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
+import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
 
 @Injectable()
 export class CommentService {
@@ -28,12 +29,27 @@ export class CommentService {
     return await this.commentRepository.save(comment);
   }
 
-  async findStoryComments(storyId: number): Promise<any> {
-    const comments = await this.commentRepository.findOne({
-      where: { storyId },
-      relations: ["story"],
-    });
+  async findStoryComments(storyId: number): Promise<StoryCommentsResponse> {
+    const queryBuilder = this.dataSource
+      .getRepository(CommentEntity)
+      .createQueryBuilder("comments")
+      .leftJoinAndSelect("comments.story", "story")
+      .where("story.id = :storyId", { storyId });
 
-    return comments.story.comments;
+    queryBuilder.orderBy("comments.createdAt", "DESC");
+    const storyCommentsCount = await queryBuilder.getCount();
+    const comments = await queryBuilder.getMany();
+    const storyComments = comments?.map((comment) => ({
+      storyId,
+      id: comment?.id,
+      body: comment.body,
+      createdAt: comment.createdAt,
+      updatedAt: comment.updatedAt,
+    }));
+
+    return {
+      storyComments,
+      storyCommentsCount,
+    };
   }
 }

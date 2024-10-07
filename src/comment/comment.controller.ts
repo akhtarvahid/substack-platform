@@ -2,6 +2,7 @@ import { Body, Controller, Get, Inject, Param, Post } from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
+import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
 
 @Controller("stories/:id")
 export class CommentController {
@@ -21,7 +22,7 @@ export class CommentController {
   }
 
   @Get("/comments")
-  async comments(@Param("id") storyId: number): Promise<any> {
+  async comments(@Param("id") storyId: number): Promise<StoryCommentsResponse> {
     return await this.commentService.findStoryComments(storyId);
   }
 }
