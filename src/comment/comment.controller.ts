@@ -19,4 +19,9 @@ export class CommentController {
   ): Promise<CommentResponseType> {
     return await this.commentService.create(storyId, createCommentDto);
   }
+
+  @Get("/comments")
+  async comments(@Param("id") storyId: number): Promise<any> {
+    return await this.commentService.findStoryComments(storyId);
+  }
 }

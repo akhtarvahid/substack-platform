@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CommentEntity } from "./entities/comment.entity";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
@@ -12,7 +12,8 @@ export class CommentService {
     @InjectRepository(CommentEntity)
     private readonly commentRepository: Repository<CommentEntity>,
     @InjectRepository(StoryEntity)
-    private readonly storyRepository: Repository<StoryEntity>
+    private readonly storyRepository: Repository<StoryEntity>,
+    private dataSource: DataSource
   ) {}
 
   async create(
@@ -25,5 +26,14 @@ export class CommentService {
     comment.storyId = storyId;
 
     return await this.commentRepository.save(comment);
+  }
+
+  async findStoryComments(storyId: number): Promise<any> {
+    const comments = await this.commentRepository.findOne({
+      where: { storyId },
+      relations: ["story"],
+    });
+
+    return comments.story.comments;
   }
 }
