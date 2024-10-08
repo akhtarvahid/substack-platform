@@ -11,7 +11,10 @@ import {
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
-import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
+import {
+  CommentsResponse,
+  StoryCommentsResponse,
+} from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { UpdateResponseType } from "./interfaces/update-response.interface";
 
@@ -23,12 +26,21 @@ export class CommentController {
   health() {
     return "COMMENTS UP";
   }
+
   @Get("/comments")
   async comments(
     @Param("id") storyId: number,
     @Query() query: any
   ): Promise<StoryCommentsResponse> {
     return await this.commentService.findStoryComments(storyId, query);
+  }
+
+  @Get("/comments/:commentId")
+  async comment(
+    @Param("id") storyId: number,
+    @Param("commentId") commentId: number
+  ): Promise<CommentsResponse> {
+    return await this.commentService.findOneStoryComment(storyId, commentId);
   }
 
   @Post("/comments")
@@ -45,8 +57,10 @@ export class CommentController {
     @Param("commentId") commentId: number,
     @Body("comment") updateCommentDto: UpdateCommentDto
   ): Promise<UpdateResponseType> {
-    return await this.commentService.update(storyId, commentId, updateCommentDto);
+    return await this.commentService.update(
+      storyId,
+      commentId,
+      updateCommentDto
+    );
   }
-
-
 }

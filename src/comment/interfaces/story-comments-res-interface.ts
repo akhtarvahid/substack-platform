@@ -4,7 +4,7 @@ export class StoryCommentsResponse {
   resultCount: number;
 }
 
-class CommentsResponse {
+export class CommentsResponse {
   storyId: number;
   id: number;
   body: string;

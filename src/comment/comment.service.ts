@@ -5,7 +5,10 @@ import { DataSource, Repository } from "typeorm";
 import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
-import { StoryCommentsResponse } from "./interfaces/story-comments-res-interface";
+import {
+  CommentsResponse,
+  StoryCommentsResponse,
+} from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { UpdateResponseType } from "./interfaces/update-response.interface";
 
@@ -81,5 +84,16 @@ export class CommentService {
       storyCommentsCount,
       resultCount,
     };
+  }
+
+  async findOneStoryComment(
+    storyId: number,
+    commentId: number
+  ): Promise<CommentsResponse> {
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, storyId: storyId },
+    });
+
+    return comment;
   }
 }
