@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -62,5 +63,13 @@ export class CommentController {
       commentId,
       updateCommentDto
     );
+  }
+
+  @Delete("/comments/:commentId")
+  async deleteComment(
+    @Param("id") storyId: number,
+    @Param("commentId") commentId: number
+  ): Promise<String> {
+    return await this.commentService.delete(storyId, commentId);
   }
 }

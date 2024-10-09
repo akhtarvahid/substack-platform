@@ -96,4 +96,16 @@ export class CommentService {
 
     return comment;
   }
+
+  async delete(storyId: number, commentId: number): Promise<String> {
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, storyId: storyId },
+    }); 
+    
+    // check if comment exist
+    if (comment) {
+      await this.commentRepository.delete(commentId);
+    }
+    return `comment with id ${commentId} deleted`;
+  }
 }
