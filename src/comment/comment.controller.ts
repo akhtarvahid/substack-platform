@@ -49,6 +49,7 @@ export class CommentController {
   }
 
   @Post("/comments")
+  @UseGuards(AuthGuard)
   async createComment(
     @Param("id") storyId: number,
     @Body("comment") createCommentDto: CreateCommentDto

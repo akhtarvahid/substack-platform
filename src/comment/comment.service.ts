@@ -26,10 +26,15 @@ export class CommentService {
     storyId: number,
     createCommentDto: CreateCommentDto
   ): Promise<CommentResponseType> {
+    const story = await this.storyRepository.findOne({
+      where: { id: storyId },
+    });
+
     const comment = new CommentEntity();
     Object.assign(comment, createCommentDto);
 
     comment.storyId = storyId;
+    comment.authorId = story.author.id;
 
     return await this.commentRepository.save(comment);
   }
@@ -72,8 +77,9 @@ export class CommentService {
     const comments = await queryBuilder.getMany();
     const resultCount = Math.ceil(storyCommentsCount / query.limit);
     const storyComments = comments?.map((comment) => ({
-      storyId,
       id: comment?.id,
+      storyId: comment.storyId,
+      authorId: comment?.authorId,
       body: comment.body,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,

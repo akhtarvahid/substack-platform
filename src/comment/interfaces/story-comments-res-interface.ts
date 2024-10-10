@@ -5,6 +5,7 @@ export class StoryCommentsResponse {
 }
 
 export class CommentsResponse {
+  authorId: number;
   storyId: number;
   id: number;
   body: string;

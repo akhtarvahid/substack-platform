@@ -1,4 +1,5 @@
 import { StoryEntity } from "@app/story/entities/story.entity";
+import { UserEntity } from "@app/user/entities/user.entity";
 import {
   Column,
   CreateDateColumn,
@@ -22,9 +23,15 @@ export class CommentEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
 
+  @ManyToOne(() => StoryEntity, (story) => story.comments)
+  story: StoryEntity;
+
   @Column()
   storyId: number;
 
-  @ManyToOne(() => StoryEntity, (story) => story.comments)
-  story: StoryEntity;
+  @ManyToOne(() => UserEntity, (user) => user.comments)
+  author: UserEntity;
+
+  @Column()
+  authorId: number;
 }
