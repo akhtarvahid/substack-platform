@@ -24,17 +24,14 @@ export class CommentService {
 
   async create(
     storyId: number,
+    userId: number,
     createCommentDto: CreateCommentDto
   ): Promise<CommentResponseType> {
-    const story = await this.storyRepository.findOne({
-      where: { id: storyId },
-    });
-
     const comment = new CommentEntity();
     Object.assign(comment, createCommentDto);
 
     comment.storyId = storyId;
-    comment.authorId = story.author.id;
+    comment.authorId = userId;
 
     return await this.commentRepository.save(comment);
   }

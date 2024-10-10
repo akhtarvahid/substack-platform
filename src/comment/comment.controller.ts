@@ -20,6 +20,7 @@ import {
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { UpdateResponseType } from "./interfaces/update-response.interface";
 import { AuthGuard } from "@app/user/guards/auth.guard";
+import { User } from "@app/user/decorator/user.decorator";
 
 @Controller("stories/:id")
 export class CommentController {
@@ -52,9 +53,10 @@ export class CommentController {
   @UseGuards(AuthGuard)
   async createComment(
     @Param("id") storyId: number,
+    @User("id") userId: number,
     @Body("comment") createCommentDto: CreateCommentDto
   ): Promise<CommentResponseType> {
-    return await this.commentService.create(storyId, createCommentDto);
+    return await this.commentService.create(storyId, userId, createCommentDto);
   }
 
   @Put("/comments/:commentId")
