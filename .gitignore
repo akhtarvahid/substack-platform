@@ -1,12 +1,12 @@
 # compiled output
-
+/.vscode
 /node_modules
 yarn.lock
 dist
 
 .env.stage.dev
 .env.stage.prod
-
+/migration-note.md
 # Logs
 logs
 *.log

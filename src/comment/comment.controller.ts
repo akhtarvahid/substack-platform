@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
@@ -18,6 +19,7 @@ import {
 } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { UpdateResponseType } from "./interfaces/update-response.interface";
+import { AuthGuard } from "@app/user/guards/auth.guard";
 
 @Controller("stories/:id")
 export class CommentController {
@@ -29,6 +31,7 @@ export class CommentController {
   }
 
   @Get("/comments")
+  @UseGuards(AuthGuard)
   async comments(
     @Param("id") storyId: number,
     @Query() query: any
@@ -37,6 +40,7 @@ export class CommentController {
   }
 
   @Get("/comments/:commentId")
+  @UseGuards(AuthGuard)
   async comment(
     @Param("id") storyId: number,
     @Param("commentId") commentId: number
@@ -53,6 +57,7 @@ export class CommentController {
   }
 
   @Put("/comments/:commentId")
+  @UseGuards(AuthGuard)
   async updateComment(
     @Param("id") storyId: number,
     @Param("commentId") commentId: number,
@@ -66,6 +71,7 @@ export class CommentController {
   }
 
   @Delete("/comments/:commentId")
+  @UseGuards(AuthGuard)
   async deleteComment(
     @Param("id") storyId: number,
     @Param("commentId") commentId: number
