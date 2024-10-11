@@ -9,16 +9,16 @@ import {
   Put,
   Query,
   UseGuards,
+  UsePipes,
 } from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
-import {
-  FindAllStoryCommentResponse,
-} from "./interfaces/story-comments-res-interface";
+import { FindAllStoryCommentResponse } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { AuthGuard } from "@app/user/guards/auth.guard";
 import { User } from "@app/user/decorator/user.decorator";
+import { GlobalValidationPipe } from "@app/shared/pipes/global-validation.pipe";
 
 @Controller("stories/:id")
 export class CommentController {
@@ -54,6 +54,7 @@ export class CommentController {
 
   @Post("/comments")
   @UseGuards(AuthGuard)
+  @UsePipes(new GlobalValidationPipe())
   async createComment(
     @Param("id") storyId: number,
     @User("id") userId: number,
@@ -69,6 +70,7 @@ export class CommentController {
 
   @Put("/comments/:commentId")
   @UseGuards(AuthGuard)
+  @UsePipes(new GlobalValidationPipe())
   async updateComment(
     @Param("id") storyId: number,
     @Param("commentId") commentId: number,
