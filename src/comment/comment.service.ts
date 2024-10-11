@@ -6,11 +6,9 @@ import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
 import {
-  CommentsResponse,
-  StoryCommentsResponse,
+  FindAllStoryCommentResponse,
 } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
-import { UpdateResponseType } from "./interfaces/update-response.interface";
 
 @Injectable()
 export class CommentService {
@@ -26,7 +24,7 @@ export class CommentService {
     storyId: number,
     userId: number,
     createCommentDto: CreateCommentDto
-  ): Promise<CommentResponseType> {
+  ): Promise<CommentEntity> {
     const comment = new CommentEntity();
     Object.assign(comment, createCommentDto);
 
@@ -40,7 +38,7 @@ export class CommentService {
     storyId: number,
     commentId: number,
     updateCommentDto: UpdateCommentDto
-  ): Promise<UpdateResponseType> {
+  ): Promise<CommentEntity> {
     const comment = await this.commentRepository.findOne({
       where: { id: commentId, storyId: storyId },
     });
@@ -53,7 +51,7 @@ export class CommentService {
   async findStoryComments(
     storyId: number,
     query: any
-  ): Promise<StoryCommentsResponse> {
+  ): Promise<FindAllStoryCommentResponse> {
     const queryBuilder = this.dataSource
       .getRepository(CommentEntity)
       .createQueryBuilder("comments")
@@ -92,7 +90,7 @@ export class CommentService {
   async findOneStoryComment(
     storyId: number,
     commentId: number
-  ): Promise<CommentsResponse> {
+  ): Promise<CommentEntity> {
     const comment = await this.commentRepository.findOne({
       where: { id: commentId, storyId: storyId },
     });
@@ -110,5 +108,13 @@ export class CommentService {
       await this.commentRepository.delete(commentId);
     }
     return `comment with id ${commentId} deleted`;
+  }
+
+  async buildCommentResponse(
+    comment: CommentEntity
+  ): Promise<CommentResponseType> {
+    return {
+      storyComment: comment,
+    };
   }
 }

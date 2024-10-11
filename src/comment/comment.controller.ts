@@ -14,11 +14,9 @@ import { CommentService } from "./comment.service";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
 import {
-  CommentsResponse,
-  StoryCommentsResponse,
+  FindAllStoryCommentResponse,
 } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
-import { UpdateResponseType } from "./interfaces/update-response.interface";
 import { AuthGuard } from "@app/user/guards/auth.guard";
 import { User } from "@app/user/decorator/user.decorator";
 
@@ -36,7 +34,7 @@ export class CommentController {
   async comments(
     @Param("id") storyId: number,
     @Query() query: any
-  ): Promise<StoryCommentsResponse> {
+  ): Promise<FindAllStoryCommentResponse> {
     return await this.commentService.findStoryComments(storyId, query);
   }
 
@@ -45,8 +43,13 @@ export class CommentController {
   async comment(
     @Param("id") storyId: number,
     @Param("commentId") commentId: number
-  ): Promise<CommentsResponse> {
-    return await this.commentService.findOneStoryComment(storyId, commentId);
+  ): Promise<CommentResponseType> {
+    const comment = await this.commentService.findOneStoryComment(
+      storyId,
+      commentId
+    );
+
+    return this.commentService.buildCommentResponse(comment);
   }
 
   @Post("/comments")
@@ -56,7 +59,12 @@ export class CommentController {
     @User("id") userId: number,
     @Body("comment") createCommentDto: CreateCommentDto
   ): Promise<CommentResponseType> {
-    return await this.commentService.create(storyId, userId, createCommentDto);
+    const comment = await this.commentService.create(
+      storyId,
+      userId,
+      createCommentDto
+    );
+    return this.commentService.buildCommentResponse(comment);
   }
 
   @Put("/comments/:commentId")
@@ -65,12 +73,14 @@ export class CommentController {
     @Param("id") storyId: number,
     @Param("commentId") commentId: number,
     @Body("comment") updateCommentDto: UpdateCommentDto
-  ): Promise<UpdateResponseType> {
-    return await this.commentService.update(
+  ): Promise<CommentResponseType> {
+    const updatedComment = await this.commentService.update(
       storyId,
       commentId,
       updateCommentDto
     );
+
+    return this.commentService.buildCommentResponse(updatedComment);
   }
 
   @Delete("/comments/:commentId")

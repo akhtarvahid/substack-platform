@@ -1,5 +1,5 @@
-import { CommentEntity } from "../entities/comment.entity";
+import { CommentsResponse } from "./story-comments-res-interface";
 
-export class CommentResponseType extends CommentEntity {
-  storyId: number;
+export class CommentResponseType {
+  storyComment: CommentsResponse
 }

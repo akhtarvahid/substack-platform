@@ -1,4 +1,4 @@
-export class StoryCommentsResponse {
+export class FindAllStoryCommentResponse {
   storyComments: CommentsResponse[];
   storyCommentsCount: number;
   resultCount: number;
