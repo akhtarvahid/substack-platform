@@ -166,4 +166,48 @@ Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbW
 ### COMMENTS ENDPOINTS
 
 ### health comments
-GET http://localhost:3000/comments/health
+GET http://localhost:3000/stories/8/health
+
+### create comments for a specific story
+POST http://localhost:3000/stories/8/comments
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+{
+  "comment": {
+    "body": "7 React Hooks"
+  }
+}
+
+
+### get all comments
+GET http://localhost:3000/stories/8/comments
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+### get filtered comments by limit and offset
+GET http://localhost:3000/stories/1/comments?limit=5&offset=15
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+### update comment for a story
+PUT http://localhost:3000/stories/8/comments/45
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+{
+  "comment": {
+    "storyId": "8",
+    "body": "updated... 7 React Hooks"
+  }
+}
+
+### get a comment for a story
+GET http://localhost:3000/stories/8/comments/45
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+### Delete comment of a story
+DELETE http://localhost:3000/stories/1/comments/31
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
