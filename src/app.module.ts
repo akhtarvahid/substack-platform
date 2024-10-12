@@ -7,6 +7,7 @@ import { AuthMiddleware } from "./user/middlewares/auth.middleware";
 import { StoryModule } from "./story/story.module";
 import { ProfileModule } from "./profile/profile.module";
 import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
 import ormConfig from "./ormconfig";
 
 @Module({
@@ -20,6 +21,7 @@ import ormConfig from "./ormconfig";
     StoryModule,
     ProfileModule,
     CommentModule,
+    LikeModule,
   ],
 })
 export class AppModule {
