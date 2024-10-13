@@ -124,7 +124,6 @@ export class CommentService {
     storyId: number,
     commentId: number
   ): Promise<CommentEntity> {
-    console.log(currentUserId, storyId, commentId);
     const comment = await this.commentRepository.findOne({
       where: { id: commentId, storyId: storyId },
     });
@@ -141,6 +140,33 @@ export class CommentService {
     if (isNotUpVoted) {
       user.upvotedComments.push(comment);
       comment.upvoteCount++;
+      await this.userRepository.save(user);
+      await this.commentRepository.save(comment);
+    }
+    return comment;
+  }
+
+  async downvote(
+    currentUserId: number,
+    storyId: number,
+    commentId: number
+  ): Promise<CommentEntity> {
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, storyId: storyId },
+    });
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+      relations: ["upvotedComments"],
+    });
+
+    const commentIndex = user.upvotedComments.findIndex(
+      (upvotedComment) => upvotedComment.id === comment.id
+    );
+
+    if (commentIndex >= 0) {
+      user.upvotedComments.splice(commentIndex, 1);
+
+      comment.upvoteCount--;
       await this.userRepository.save(user);
       await this.commentRepository.save(comment);
     }

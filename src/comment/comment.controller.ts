@@ -94,15 +94,35 @@ export class CommentController {
     return await this.commentService.delete(storyId, commentId);
   }
 
-    // liked comment of stories 
-    @Post("/comments/:commentId/upvote")
-    @UseGuards(AuthGuard)
-    async addCommentToUpvoted(
-      @User("id") currentUserId: number,
-      @Param("id") storyId: number,
-      @Param("commentId") commentId: number
-    ): Promise<CommentResponseType | null> {
-      const comment = await this.commentService.upvote(currentUserId, storyId, commentId);
-      return await this.commentService.buildCommentResponse(comment);
-    }
+  // upvote comment of stories
+  @Post("/comments/:commentId/upvote")
+  @UseGuards(AuthGuard)
+  async upvoteComment(
+    @User("id") currentUserId: number,
+    @Param("id") storyId: number,
+    @Param("commentId") commentId: number
+  ): Promise<CommentResponseType> {
+    const comment = await this.commentService.upvote(
+      currentUserId,
+      storyId,
+      commentId
+    );
+    return await this.commentService.buildCommentResponse(comment);
+  }
+
+  // downvote comment of stories
+  @Delete("/comments/:commentId/downvote")
+  @UseGuards(AuthGuard)
+  async downvoteComment(
+    @User("id") currentUserId: number,
+    @Param("id") storyId: number,
+    @Param("commentId") commentId: number
+  ): Promise<CommentResponseType> {
+    const comment = await this.commentService.downvote(
+      currentUserId,
+      storyId,
+      commentId
+    );
+    return await this.commentService.buildCommentResponse(comment);
+  }
 }
