@@ -93,4 +93,16 @@ export class CommentController {
   ): Promise<String> {
     return await this.commentService.delete(storyId, commentId);
   }
+
+    // liked comment of stories 
+    @Post("/comments/:commentId/upvote")
+    @UseGuards(AuthGuard)
+    async addCommentToUpvoted(
+      @User("id") currentUserId: number,
+      @Param("id") storyId: number,
+      @Param("commentId") commentId: number
+    ): Promise<CommentResponseType | null> {
+      const comment = await this.commentService.upvote(currentUserId, storyId, commentId);
+      return await this.commentService.buildCommentResponse(comment);
+    }
 }

@@ -37,4 +37,8 @@ export class UserEntity {
 
     @OneToMany(() => CommentEntity, (comment) => comment.author, { eager: true })
     comments: CommentEntity[];
+
+    @ManyToMany(() => CommentEntity)
+    @JoinTable({ name: 'users_upvoted_post_comments' })
+    upvotedComments: CommentEntity[];
 }

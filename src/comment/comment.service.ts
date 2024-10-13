@@ -9,6 +9,7 @@ import {
   FindAllStoryCommentResponse,
 } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
+import { UserEntity } from "@app/user/entities/user.entity";
 
 @Injectable()
 export class CommentService {
@@ -17,6 +18,8 @@ export class CommentService {
     private readonly commentRepository: Repository<CommentEntity>,
     @InjectRepository(StoryEntity)
     private readonly storyRepository: Repository<StoryEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private dataSource: DataSource
   ) {}
 
@@ -116,5 +119,32 @@ export class CommentService {
     return {
       storyComment: comment,
     };
+  }
+
+  async upvote(currentUserId: number, storyId: number, commentId: number): Promise<CommentEntity> {
+    console.log(currentUserId, storyId, commentId);
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, storyId: storyId },
+       
+    })
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+      relations: ["upvotedComments"],
+    });
+
+    console.log(comment);
+    console.log('***********************************');
+    console.log(user);
+
+    const isNotUpVoted =
+      user.upvotedComments.findIndex((commentExist) => commentExist.id === comment.id) ===
+      -1;
+
+    if (isNotUpVoted) {
+      user.upvotedComments.push(comment);
+      await this.userRepository.save(user);
+      await this.commentRepository.save(comment);
+    }
+    return comment;
   }
 }
