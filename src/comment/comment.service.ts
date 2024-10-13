@@ -5,9 +5,7 @@ import { DataSource, Repository } from "typeorm";
 import { StoryEntity } from "@app/story/entities/story.entity";
 import { CreateCommentDto } from "./dtos/create-comment.dto";
 import { CommentResponseType } from "./interfaces/create-response.interface";
-import {
-  FindAllStoryCommentResponse,
-} from "./interfaces/story-comments-res-interface";
+import { FindAllStoryCommentResponse } from "./interfaces/story-comments-res-interface";
 import { UpdateCommentDto } from "./dtos/update-comment.dto";
 import { UserEntity } from "@app/user/entities/user.entity";
 
@@ -121,27 +119,28 @@ export class CommentService {
     };
   }
 
-  async upvote(currentUserId: number, storyId: number, commentId: number): Promise<CommentEntity> {
+  async upvote(
+    currentUserId: number,
+    storyId: number,
+    commentId: number
+  ): Promise<CommentEntity> {
     console.log(currentUserId, storyId, commentId);
     const comment = await this.commentRepository.findOne({
       where: { id: commentId, storyId: storyId },
-       
-    })
+    });
     const user = await this.userRepository.findOne({
       where: { id: currentUserId },
       relations: ["upvotedComments"],
     });
 
-    console.log(comment);
-    console.log('***********************************');
-    console.log(user);
-
     const isNotUpVoted =
-      user.upvotedComments.findIndex((commentExist) => commentExist.id === comment.id) ===
-      -1;
+      user.upvotedComments.findIndex(
+        (commentExist) => commentExist.id === comment.id
+      ) === -1;
 
     if (isNotUpVoted) {
       user.upvotedComments.push(comment);
+      comment.upvoteCount++;
       await this.userRepository.save(user);
       await this.commentRepository.save(comment);
     }

@@ -34,4 +34,7 @@ export class CommentEntity {
 
   @Column()
   authorId: number;
+
+  @Column({ default: 0 })
+  upvoteCount: number;
 }
