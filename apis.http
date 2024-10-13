@@ -212,3 +212,12 @@ DELETE http://localhost:3000/stories/1/comments/31
 Content-Type: application/json
 Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
 
+### upvote comment of a story
+POST http://localhost:3000/stories/8/comments/45/upvote
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
+
+### downvote comment of a story
+DELETE  http://localhost:3000/stories/8/comments/45/downvote
+Content-Type: application/json
+Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhbmFoaWQiLCJlbWFpbCI6ImFuYWhpZEBnbWFpbC5jb20iLCJpYXQiOjE3Mjc5NjQ0MDksImV4cCI6MzQ1NTkzMjQxOH0.fn7Xz9900c1gQ2jzh3ns2unHOZEpuGDkRGsOZxA-8zY
