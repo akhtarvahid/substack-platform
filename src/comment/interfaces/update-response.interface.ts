@@ -1,5 +1,5 @@
 import { CommentEntity } from "../entities/comment.entity";
 
-export class UpdateResponseType {
+export interface UpdateResponseType {
   storyComment: CommentEntity;
 }

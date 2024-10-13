@@ -76,6 +76,7 @@ export class CommentService {
       id: comment?.id,
       storyId: comment.storyId,
       authorId: comment?.authorId,
+      upvoteCount: comment?.upvoteCount,
       body: comment.body,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
